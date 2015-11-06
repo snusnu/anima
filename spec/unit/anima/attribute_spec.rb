@@ -27,7 +27,7 @@ describe Anima::Attribute do
 
     let(:target)         { Object.new      }
     let(:value)          { double('Value') }
-    let(:attribute_hash) { { foo: value }  }
+    let(:attribute_hash) { { :foo => value }  }
 
     it 'should set value as instance variable' do
       subject

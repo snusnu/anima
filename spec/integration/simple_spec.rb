@@ -8,8 +8,8 @@ describe Anima, 'simple integration' do
   context 'when instantiated with all attributes' do
     let(:attributes) do
       {
-        firstname: 'Markus',
-        lastname:  'Schirp'
+        :firstname => 'Markus',
+        :lastname  => 'Schirp'
       }
     end
 
@@ -20,9 +20,9 @@ describe Anima, 'simple integration' do
   context 'with instantiated with extra attributes' do
     let(:attributes) do
       {
-        firstname: 'Markus',
-        lastname:  'Schirp',
-        extra:     'Foo'
+        :firstname => 'Markus',
+        :lastname  => 'Schirp',
+        :extra     => 'Foo'
       }
     end
 

@@ -2,8 +2,8 @@ describe Anima::Error do
   describe '#message' do
     let(:object) { described_class.new(Anima, missing, unknown) }
 
-    let(:missing) { %i[missing] }
-    let(:unknown) { %i[unknown] }
+    let(:missing) { [:missing] }
+    let(:unknown) { [:unknown] }
 
     subject { object.message }
 

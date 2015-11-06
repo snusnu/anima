@@ -3,11 +3,11 @@ describe Anima do
 
   describe '#attributes_hash' do
     let(:value)    { double('Value')    }
-    let(:instance) { double(foo: value) }
+    let(:instance) { double(:foo => value) }
 
     subject { object.attributes_hash(instance) }
 
-    it { should eql(foo: value) }
+    it { should eql(:foo => value) }
   end
 
   describe '#remove' do
@@ -68,9 +68,9 @@ describe Anima do
     end
 
     let(:value)      { double('Value')                }
-    let(:instance)   { target.new(foo: value)         }
-    let(:instance_b) { target.new(foo: value)         }
-    let(:instance_c) { target.new(foo: double('Bar')) }
+    let(:instance)   { target.new(:foo => value)         }
+    let(:instance_b) { target.new(:foo => value)         }
+    let(:instance_c) { target.new(:foo => double('Bar')) }
 
     context 'on instance' do
       subject { instance }
@@ -85,7 +85,7 @@ describe Anima do
       subject { target }
 
       it 'should define attribute hash reader' do
-        expect(instance.to_h).to eql(foo: value)
+        expect(instance.to_h).to eql(:foo => value)
       end
 
       its(:anima) { should be(object) }
@@ -101,17 +101,17 @@ describe Anima do
     subject { object.initialize_instance(target, attribute_hash) }
 
     context 'when all keys are present in attribute hash' do
-      let(:attribute_hash) { { foo: foo, bar: bar } }
+      let(:attribute_hash) { { :foo => foo, :bar => bar } }
 
       it 'should initialize target instance variables' do
         subject
 
         expect(
-          target
-            .instance_variables
-            .map(&:to_sym)
-            .to_set
-        ).to eql(%i[@foo @bar].to_set)
+          target.
+            instance_variables.
+            map(&:to_sym).
+            to_set
+        ).to eql([:'@foo', :'@bar'].to_set)
         expect(target.instance_variable_get(:@foo)).to be(foo)
         expect(target.instance_variable_get(:@bar)).to be(bar)
       end
@@ -120,7 +120,7 @@ describe Anima do
     end
 
     context 'when an extra key is present in attribute hash' do
-      let(:attribute_hash) { { foo: foo, bar: bar, baz: double('Baz') } }
+      let(:attribute_hash) { { :foo => foo, :bar => bar, :baz => double('Baz') } }
 
       it 'should raise error' do
         expect { subject }.to raise_error(
@@ -131,7 +131,7 @@ describe Anima do
     end
 
     context 'when a key is missing in attribute hash' do
-      let(:attribute_hash) { { bar: bar } }
+      let(:attribute_hash) { { :bar => bar } }
 
       it 'should raise error' do
         expect { subject }.to raise_error(
@@ -147,7 +147,7 @@ describe Anima do
     let(:klass) do
       Class.new do
         include Anima.new(:foo)
-        def initialize(attributes = { foo: :bar })
+        def initialize(attributes = { :foo => :bar })
           super
         end
       end
@@ -160,7 +160,7 @@ describe Anima do
     subject { instance.to_h }
 
     let(:instance) { klass.new(params) }
-    let(:params)   { Hash[foo: :bar] }
+    let(:params)   { Hash[:foo => :bar] }
     let(:klass) do
       Class.new do
         include Anima.new(:foo)
@@ -179,7 +179,7 @@ describe Anima do
       end
     end
 
-    let(:object) { klass.new(foo: 1, bar: 2) }
+    let(:object) { klass.new(:foo => 1, :bar => 2) }
 
     context 'with empty attributes' do
       let(:attributes) { {} }
@@ -188,9 +188,9 @@ describe Anima do
     end
 
     context 'with updated attribute' do
-      let(:attributes) { { foo: 3 } }
+      let(:attributes) { { :foo => 3 } }
 
-      it { should eql(klass.new(foo: 3, bar: 2)) }
+      it { should eql(klass.new(:foo => 3, :bar => 2)) }
     end
   end
 end

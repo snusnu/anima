@@ -16,7 +16,7 @@ class Anima < Module
   #
   # @return [undefined]
   def initialize(*names)
-    @attributes = names.uniq.map(&Attribute.method(:new)).freeze
+    @attributes = names.uniq.map { |name| Attribute.new(name) }.freeze
   end
 
   # Return new anima with attributes added
